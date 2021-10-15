@@ -1,0 +1,7 @@
+version: "Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+options: "3f5091bba82fcd663688d8e5791fc874"
+build_time: [1634291445, 597289000]
+inputs:
+  "/Users/macbook/My Job/tutorial/Android/flutter/dicoding/submission/macos/Runner/MainFlutterWindow.swift": [1633880624, 321635412]
+  "/Users/macbook/My Job/tutorial/Android/flutter/dicoding/submission/macos/Runner/AppDelegate.swift": [1633880624, 318157370]
+  "/Users/macbook/My Job/tutorial/Android/flutter/dicoding/submission/macos/Flutter/GeneratedPluginRegistrant.swift": [1634291420, 482949786]
