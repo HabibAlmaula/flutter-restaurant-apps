@@ -5,10 +5,40 @@ import 'package:flutter/material.dart';
 import 'package:restaurant_app/component/restauran_item.dart';
 import 'package:restaurant_app/data/restaurant.dart';
 
-class RestaurantPage extends StatelessWidget {
+class RestaurantPage extends StatefulWidget {
   const RestaurantPage({Key? key}) : super(key: key);
 
   static const routeName = '/restaurant';
+
+  @override
+  State<RestaurantPage> createState() => _RestaurantPageState();
+}
+
+class _RestaurantPageState extends State<RestaurantPage> {
+  List<Restaurant> _restaurant = <Restaurant>[];
+  List<Restaurant> _restaurantForDisplay = <Restaurant>[];
+
+  Future<String> _fetchRestaurantAssets() async {
+    return DefaultAssetBundle.of(context)
+        .loadString("assets/json/restaurant.json");
+  }
+
+  Future<List<Restaurant>> loadRestaurant() async {
+    String jsonAsset = await _fetchRestaurantAssets();
+    final restaurantData = Restaurants.fromJson(jsonDecode(jsonAsset));
+    return restaurantData.listRestaurant;
+  }
+
+  @override
+  void initState() {
+    loadRestaurant().then((value) {
+      setState(() {
+        _restaurant.addAll(value);
+        _restaurantForDisplay = _restaurant;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,29 +48,36 @@ class RestaurantPage extends StatelessWidget {
         headerSliverBuilder: (context, isScrolled) {
           return [sliverAppBar()];
         },
-        body: FutureBuilder<String>(
-          future: DefaultAssetBundle.of(context)
-              .loadString("assets/json/restaurant.json"),
-          builder: (context, data) {
-            if (data.connectionState != ConnectionState.waiting &&
-                data.hasData) {
-              final restaurant = Restaurants.fromJson(jsonDecode(data.data!));
+        body: ListView.builder(
+          itemCount: _restaurantForDisplay.length,
+          padding: const EdgeInsets.all(5.0),
 
-              return ListView.builder(
-                padding: const EdgeInsets.all(5.0),
-                itemCount: restaurant.listRestaurant.length,
-                itemBuilder: (context, index) {
-                  Restaurant restItem = restaurant.listRestaurant[index];
-                  return restaurantItem(context, restItem);
-                },
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        ),
+          itemBuilder: (context, index) {
+          return restaurantItem(context, _restaurantForDisplay[index]);
+        }),
+        // body: FutureBuilder<String>(
+        //   future: DefaultAssetBundle.of(context)
+        //       .loadString("assets/json/restaurant.json"),
+        //   builder: (context, data) {
+        //     if (data.connectionState != ConnectionState.waiting &&
+        //         data.hasData) {
+        //       final restaurant = Restaurants.fromJson(jsonDecode(data.data!));
+
+        //       return ListView.builder(
+        //         padding: const EdgeInsets.all(5.0),
+        //         itemCount: restaurant.listRestaurant.length,
+        //         itemBuilder: (context, index) {
+        //           Restaurant restItem = restaurant.listRestaurant[index];
+        //           return restaurantItem(context, restItem);
+        //         },
+        //       );
+        //     } else {
+        //       return const Center(
+        //         child: CircularProgressIndicator(),
+        //       );
+        //     }
+        //   },
+        // ),
       ),
     );
   }
@@ -68,6 +105,15 @@ class RestaurantPage extends StatelessWidget {
         ),
         child: CupertinoTextField(
           // controller: _filter,
+          onChanged: (text) {
+            text = text.toLowerCase();
+            setState(() {
+              _restaurantForDisplay = _restaurant.where((rest) {
+                var restaurantName = rest.name.toLowerCase();
+                return restaurantName.contains(text);
+              }).toList();
+            });
+          },
           keyboardType: TextInputType.text,
           placeholder: 'Search',
           placeholderStyle: const TextStyle(
