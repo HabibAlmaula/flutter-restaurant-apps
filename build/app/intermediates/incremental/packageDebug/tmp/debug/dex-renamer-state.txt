@@ -1,4 +1,0 @@
-#Fri Oct 15 22:51:21 WIB 2021
-base.0=/Users/macbook/My Job/tutorial/Android/flutter/dicoding/submission/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
-renamed.0=classes.dex
-path.0=classes.dex

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:restaurant_app/data/restaurant.dart';
 import 'package:restaurant_app/pages/detail_restaurant.dart';
 import 'package:restaurant_app/pages/restaurant_page.dart';
+import 'package:restaurant_app/pages/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,10 +14,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.deepOrange,
           visualDensity: VisualDensity.adaptivePlatformDensity),
-      initialRoute: RestaurantPage.routeName,
+      initialRoute: SplashScreen.routeName,
       routes: {
+        SplashScreen.routeName:(context) => SplashScreen(),
         RestaurantPage.routeName: (context) => const RestaurantPage(),
         DetailRestaurant.routeName: (context) => DetailRestaurant(restaurants: ModalRoute.of(context)?.settings.arguments as Restaurant,)
       },
