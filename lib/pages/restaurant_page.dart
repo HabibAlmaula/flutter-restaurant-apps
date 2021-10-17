@@ -15,7 +15,7 @@ class RestaurantPage extends StatefulWidget {
 }
 
 class _RestaurantPageState extends State<RestaurantPage> {
-  List<Restaurant> _restaurant = <Restaurant>[];
+  final List<Restaurant> _restaurant = <Restaurant>[];
   List<Restaurant> _restaurantForDisplay = <Restaurant>[];
 
   Future<String> _fetchRestaurantAssets() async {
@@ -55,29 +55,6 @@ class _RestaurantPageState extends State<RestaurantPage> {
           itemBuilder: (context, index) {
           return restaurantItem(context, _restaurantForDisplay[index]);
         }),
-        // body: FutureBuilder<String>(
-        //   future: DefaultAssetBundle.of(context)
-        //       .loadString("assets/json/restaurant.json"),
-        //   builder: (context, data) {
-        //     if (data.connectionState != ConnectionState.waiting &&
-        //         data.hasData) {
-        //       final restaurant = Restaurants.fromJson(jsonDecode(data.data!));
-
-        //       return ListView.builder(
-        //         padding: const EdgeInsets.all(5.0),
-        //         itemCount: restaurant.listRestaurant.length,
-        //         itemBuilder: (context, index) {
-        //           Restaurant restItem = restaurant.listRestaurant[index];
-        //           return restaurantItem(context, restItem);
-        //         },
-        //       );
-        //     } else {
-        //       return const Center(
-        //         child: CircularProgressIndicator(),
-        //       );
-        //     }
-        //   },
-        // ),
       ),
     );
   }

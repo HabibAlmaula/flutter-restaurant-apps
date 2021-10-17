@@ -37,7 +37,6 @@ class AvatarBottomSheet extends StatelessWidget {
                       CircleAvatar(
                         backgroundColor: Colors.white24,
                         child: (title =="food") ? Image.asset("assets/images/food.png", scale: 2,) : Image.asset("assets/images/drink.png", scale: 2,),
-                        // child: Icon(Icons.restaurant_menu_rounded),
                         radius: 32,
                       ),
                     ],
@@ -87,12 +86,6 @@ Future<T?> showAvatarModalBottomSheet<T>({
   bool enableDrag = true,
   Duration? duration,
 }) async {
-  assert(context != null);
-  assert(builder != null);
-  assert(expand != null);
-  assert(useRootNavigator != null);
-  assert(isDismissible != null);
-  assert(enableDrag != null);
   assert(debugCheckHasMediaQuery(context));
   assert(debugCheckHasMaterialLocalizations(context));
   final result = await Navigator.of(context, rootNavigator: useRootNavigator)

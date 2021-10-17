@@ -15,16 +15,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.deepOrange,
+      theme: ThemeData(
+          primarySwatch: Colors.deepOrange,
           visualDensity: VisualDensity.adaptivePlatformDensity),
       initialRoute: SplashScreen.routeName,
       routes: {
-        SplashScreen.routeName:(context) => SplashScreen(),
+        SplashScreen.routeName: (context) => SplashScreen(),
         RestaurantPage.routeName: (context) => const RestaurantPage(),
-        DetailRestaurant.routeName: (context) => DetailRestaurant(restaurants: ModalRoute.of(context)?.settings.arguments as Restaurant,)
+        DetailRestaurant.routeName: (context) => DetailRestaurant(
+              restaurants:
+                  ModalRoute.of(context)?.settings.arguments as Restaurant,
+            )
       },
     );
   }
 }
-
-

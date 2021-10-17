@@ -6,7 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:restaurant_app/pages/restaurant_page.dart';
 
 class SplashScreen extends StatefulWidget {
-  SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({Key? key}) : super(key: key);
 
   static const routeName = "/splash";
 
@@ -46,5 +46,5 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  
+
 }
