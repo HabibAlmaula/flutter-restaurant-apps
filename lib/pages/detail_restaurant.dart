@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/component/circular_modal.dart';
 import 'package:restaurant_app/component/content_modal.dart';
-import 'package:restaurant_app/data/restaurant.dart';
+import 'package:restaurant_app/data/models/restaurant.dart';
 
 class DetailRestaurant extends StatefulWidget {
   final Restaurant restaurants;

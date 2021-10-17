@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/component/restauran_item.dart';
-import 'package:restaurant_app/data/restaurant.dart';
+import 'package:restaurant_app/data/models/restaurant.dart';
 
 class RestaurantPage extends StatefulWidget {
   const RestaurantPage({Key? key}) : super(key: key);

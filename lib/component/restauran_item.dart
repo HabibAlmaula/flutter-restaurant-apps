@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:restaurant_app/data/restaurant.dart';
+import 'package:restaurant_app/data/models/restaurant.dart';
 import 'package:restaurant_app/pages/detail_restaurant.dart';
 
 Widget restaurantItem(BuildContext context, Restaurant restaurant) {
@@ -60,7 +60,7 @@ Widget restaurantItem(BuildContext context, Restaurant restaurant) {
                     child: Row(children: [
                       RatingBarIndicator(
                         rating: restaurant.rating,
-                        itemBuilder: (context, index) => Icon(Icons.star, color: Colors.amber,),
+                        itemBuilder: (context, index) => const Icon(Icons.star, color: Colors.amber,),
                         itemCount: 5,
                         itemSize: 16.0,
                         direction: Axis.horizontal,
