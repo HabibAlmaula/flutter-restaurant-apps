@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:restaurant_app/data/models/restaurant.dart';
+import 'package:restaurant_app/data/service/api_service.dart';
 import 'package:restaurant_app/pages/detail_restaurant.dart';
 
 Widget restaurantItem(BuildContext context, Restaurant restaurant) {
   return Card(
       child: InkWell(
     onTap: () {
-      Navigator.pushNamed(context, DetailRestaurant.routeName,
-          arguments: restaurant);
+      // Navigator.pushNamed(context, DetailRestaurant.routeName,
+      //     arguments: restaurant);
     },
     child: Padding(
       padding: const EdgeInsets.all(8.0),
@@ -21,7 +22,7 @@ Widget restaurantItem(BuildContext context, Restaurant restaurant) {
               borderRadius: BorderRadius.circular(10),
               child: Hero(
                 tag: restaurant.pictureId,
-                child: Image.network(
+                child: Image.network(ApiService.baseUrlPictureMedium+
                   restaurant.pictureId,
                   width: 100,
                   height: 80,

@@ -7,24 +7,26 @@ part of 'restaurant.dart';
 // **************************************************************************
 
 Restaurants _$RestaurantsFromJson(Map<String, dynamic> json) => Restaurants(
-      (json['restaurants'] as List<dynamic>)
+      error: json['error'] as bool,
+      restaurants: (json['restaurants'] as List<dynamic>)
           .map((e) => Restaurant.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$RestaurantsToJson(Restaurants instance) =>
     <String, dynamic>{
-      'restaurants': instance.listRestaurant,
+      'error': instance.error,
+      'restaurants': instance.restaurants,
     };
 
 Restaurant _$RestaurantFromJson(Map<String, dynamic> json) => Restaurant(
-      json['id'] as String,
-      json['name'] as String,
-      json['description'] as String,
-      json['pictureId'] as String,
-      json['city'] as String,
-      (json['rating'] as num).toDouble(),
-    )..menu = Menu.fromJson(json['menus'] as Map<String, dynamic>);
+      id: json['id'] as String,
+      name: json['name'] as String,
+      description: json['description'] as String,
+      pictureId: json['pictureId'] as String,
+      city: json['city'] as String,
+      rating: (json['rating'] as num).toDouble(),
+    );
 
 Map<String, dynamic> _$RestaurantToJson(Restaurant instance) =>
     <String, dynamic>{
@@ -34,19 +36,4 @@ Map<String, dynamic> _$RestaurantToJson(Restaurant instance) =>
       'pictureId': instance.pictureId,
       'city': instance.city,
       'rating': instance.rating,
-      'menus': instance.menu,
-    };
-
-Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
-      (json['foods'] as List<dynamic>)
-          .map((e) => Food.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      (json['drinks'] as List<dynamic>)
-          .map((e) => Drink.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$MenuToJson(Menu instance) => <String, dynamic>{
-      'foods': instance.listFood,
-      'drinks': instance.listDrink,
     };

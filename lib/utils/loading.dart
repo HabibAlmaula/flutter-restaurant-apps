@@ -1,0 +1,1 @@
+enum LoadingState {Loading, NoData, HasData, Error}
