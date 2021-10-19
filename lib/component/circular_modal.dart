@@ -10,7 +10,11 @@ class AvatarBottomSheet extends StatelessWidget {
   final Widget child;
   final Animation<double> animation;
 
-  const AvatarBottomSheet({Key? key,required this.title ,required  this.child, required this.animation})
+  const AvatarBottomSheet(
+      {Key? key,
+      required this.title,
+      required this.child,
+      required this.animation})
       : super(key: key);
 
   @override
@@ -36,7 +40,15 @@ class AvatarBottomSheet extends StatelessWidget {
                       const SizedBox(width: 20),
                       CircleAvatar(
                         backgroundColor: Colors.white24,
-                        child: (title =="food") ? Image.asset("assets/images/food.png", scale: 2,) : Image.asset("assets/images/drink.png", scale: 2,),
+                        child: (title == "food")
+                            ? Image.asset(
+                                "assets/images/food.png",
+                                scale: 2,
+                              )
+                            : Image.asset(
+                                "assets/images/drink.png",
+                                scale: 2,
+                              ),
                         radius: 32,
                       ),
                     ],

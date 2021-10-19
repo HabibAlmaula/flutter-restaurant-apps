@@ -5,11 +5,7 @@ part 'restaurant.g.dart';
 
 @JsonSerializable()
 class Restaurants {
-  Restaurants({
-    required this.error,
-    required this.restaurants,
-  });
-
+  Restaurants({required this.error, required this.restaurants});
   bool error;
   List<Restaurant> restaurants;
 

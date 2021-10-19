@@ -1,86 +1,112 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:restaurant_app/component/loading_item.dart';
 import 'package:restaurant_app/component/restauran_item.dart';
+import 'package:restaurant_app/data/service/api_service.dart';
 import 'package:restaurant_app/provider/restaurant_provider.dart';
 import 'package:restaurant_app/utils/loading.dart';
 
-class RestaurantPage extends StatefulWidget {
-  const RestaurantPage({Key? key}) : super(key: key);
+class RestaurantPage extends StatelessWidget {
+  RestaurantPage({Key? key}) : super(key: key);
 
   static const routeName = '/restaurant';
-
-  @override
-  State<RestaurantPage> createState() => _RestaurantPageState();
-}
-
-class _RestaurantPageState extends State<RestaurantPage> {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-
-  @override
-  void initState() {
-    Provider.of<RestaurantProvider>(context, listen: false).getRestaurant();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[300],
-      body: NestedScrollView(
-        headerSliverBuilder: (context, isScrolled) {
-          return [sliverAppBar()];
-        },
-        body: Consumer<RestaurantProvider>(
-          builder: (context, state, _) {
-            switch (state.loadingState) {
-              case LoadingState.Loading:
-                return ListView.builder(
-                  padding: const EdgeInsets.all(5.0),
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return buildShimmerRestaurantList();
-                  },
-                );
-              case LoadingState.NoData:
-                return errorOrNoData("nodata");
-              case LoadingState.HasData:
-                return SmartRefresher(
-                  enablePullDown: true,
-                  onRefresh: () {
-                    state.getRestaurant();
-                    _refreshController.refreshCompleted();
-                  },
-                  controller: _refreshController,
-                  child: ListView.builder(
-                      itemCount: state.listRestaurant.restaurants.length,
-                      padding: const EdgeInsets.all(5.0),
-                      itemBuilder: (context, index) {
-                        return restaurantItem(
-                            context, state.listRestaurant.restaurants[index]);
-                      }),
-                );
-              case LoadingState.Error:
-                return errorOrNoData("error");
-            }
+      body: ChangeNotifierProvider(
+        create: (_) =>
+            RestaurantProvider(apiService: ApiService()).getRestaurants(),
+        child: NestedScrollView(
+          headerSliverBuilder: (context, isScrolled) {
+            return [
+              Consumer<RestaurantProvider>(builder: (context, provider, _) {
+                return sliverAppBar(provider);
+              })
+            ];
           },
+          body: Consumer<RestaurantProvider>(
+            builder: (context, state, _) {
+              switch (state.loadingState) {
+                case LoadingState.Loading:
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(5.0),
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return buildShimmerRestaurantList();
+                    },
+                  );
+                case LoadingState.NoData:
+                  return const ErrorOrNoData(type: "nodata");
+                case LoadingState.HasData:
+                  return SmartRefresher(
+                    enablePullDown: true,
+                    onRefresh: () {
+                      state.getRestaurants();
+                      _refreshController.refreshCompleted();
+                    },
+                    controller: _refreshController,
+                    child: ListView.builder(
+                        itemCount: state.listRestaurant.restaurants.length,
+                        padding: const EdgeInsets.all(5.0),
+                        itemBuilder: (context, index) {
+                          return restaurantItem(
+                              context, state.listRestaurant.restaurants[index]);
+                        }),
+                  );
+                case LoadingState.Error:
+                  return ErrorOrNoData(
+                      type: "error",
+                      buttonTap: () {
+                        state.getRestaurants();
+                      });
+              }
+            },
+          ),
         ),
       ),
     );
   }
 
-  SliverAppBar sliverAppBar() {
+  SliverAppBar sliverAppBar(RestaurantProvider provider) {
     return SliverAppBar(
       expandedHeight: 200,
       backgroundColor: Colors.redAccent,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
-          background: Image.asset(
-        "assets/images/fast_food.jpeg",
-        fit: BoxFit.fitWidth,
+          background: Stack(
+        children: [
+          Image.asset(
+            "assets/images/fast_food.jpeg",
+            width: double.infinity,
+            fit: BoxFit.fitWidth,
+          ),
+          Positioned(
+              bottom: 80,
+              left: 10,
+              child: Text(
+                "Find your taste here...",
+                style: GoogleFonts.lobster(
+                  textStyle: const TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w900,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 10.0,
+                        color: Colors.white,
+                        offset: Offset(5.0, 3.0),
+                      ),
+                    ],
+                  ),
+                ),
+              ))
+        ],
       )),
       title: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -94,15 +120,9 @@ class _RestaurantPageState extends State<RestaurantPage> {
           ],
         ),
         child: CupertinoTextField(
-          // controller: _filter,
           onChanged: (text) {
-            // text = text.toLowerCase();
-            // setState(() {
-            //   _restaurantForDisplay = _restaurant.where((rest) {
-            //     var restaurantName = rest.name.toLowerCase();
-            //     return restaurantName.contains(text);
-            //   }).toList();
-            // });
+            text = text.toLowerCase();
+            provider.searchRestaurant(text);
           },
           keyboardType: TextInputType.text,
           placeholder: 'Search',

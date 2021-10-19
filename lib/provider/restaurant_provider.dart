@@ -5,22 +5,39 @@ import 'package:restaurant_app/data/service/api_service.dart';
 import 'package:restaurant_app/utils/loading.dart';
 
 class RestaurantProvider extends ChangeNotifier {
+  final ApiService apiService;
   late Restaurants _listRestaurant;
   late DetailRestaurant _detailRestaurant;
-  late String _message;
-  late LoadingState _loadingState;
+  String _message = "";
+  LoadingState _loadingState = LoadingState.Loading;
+
+  RestaurantProvider({required this.apiService});
 
   Restaurants get listRestaurant => _listRestaurant;
   DetailRestaurant get detailRestaurant => _detailRestaurant;
   String get message => _message;
   LoadingState get loadingState => _loadingState;
 
-  Future<dynamic> getRestaurant() async {
+  RestaurantProvider getRestaurants() {
+    _getRestaurant();
+    return this;
+  }
+
+  RestaurantProvider getDetailRestaurant(String id) {
+    _getDetailRestaurant(id);
+    return this;
+  }
+
+  RestaurantProvider searchRestaurant(String query) {
+    _searchRestaurant(query);
+    return this;
+  }
+
+  Future<dynamic> _getRestaurant() async {
     try {
       _loadingState = LoadingState.Loading;
       notifyListeners();
-
-      final restaurant = await ApiService().getListRestaurants();
+      final restaurant = await apiService.getListRestaurants();
       if (restaurant.restaurants.isEmpty) {
         _loadingState = LoadingState.NoData;
         notifyListeners();
@@ -37,14 +54,19 @@ class RestaurantProvider extends ChangeNotifier {
     }
   }
 
-  Future<dynamic> getDetailRestaurant(String id) async {
+  Future<dynamic> _getDetailRestaurant(String id) async {
     try {
       _loadingState = LoadingState.Loading;
       notifyListeners();
-      final detailRestaurant = await ApiService().getDetailRestaurant(id);
-      _loadingState = LoadingState.HasData;
-      notifyListeners();
-      return _detailRestaurant = detailRestaurant;
+      final dataDetailRestaurant = await ApiService().getDetailRestaurant(id);
+      if (dataDetailRestaurant.error) {
+        _loadingState = LoadingState.NoData;
+        notifyListeners();
+      } else {
+        _loadingState = LoadingState.HasData;
+        notifyListeners();
+        return _detailRestaurant = dataDetailRestaurant;
+      }
     } catch (e) {
       if (e.toString().contains('404')) {
         _loadingState = LoadingState.NoData;
@@ -58,10 +80,10 @@ class RestaurantProvider extends ChangeNotifier {
     }
   }
 
-  Future<dynamic> searchRestaurant(String query) async {
+  Future<dynamic> _searchRestaurant(String query) async {
     try {
-      // _loadingState = LoadingState.Loading;
-      // notifyListeners();
+      _loadingState = LoadingState.Loading;
+      notifyListeners();
       final resultRestaurant = await ApiService().searchRestaurant(query);
       if (resultRestaurant.restaurants.isEmpty) {
         _loadingState = LoadingState.NoData;

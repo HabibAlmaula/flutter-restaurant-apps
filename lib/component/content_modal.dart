@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/component/custom_dialog.dart';
 
 class ModalContent extends StatelessWidget {
   final List<String>? content;
@@ -21,7 +22,31 @@ class ModalContent extends StatelessWidget {
             itemCount: content!.length,
             itemBuilder: (context, index) {
               return InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CustomDialogBox(
+                              title: "Order $title?",
+                              descriptions: RichText(
+                                text: TextSpan(
+                                  text: "Anda ingin order ",
+                                  style: DefaultTextStyle.of(context).style,
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: content![index],
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    const TextSpan(text: ' ?!'),
+                                  ],
+                                ),
+                              ),
+                              text: "Ya",
+                              img: (title == 'Food')
+                                  ? "assets/images/food.png"
+                                  : "assets/images/drink.png");
+                        });
+                  },
                   child: _buildItemMenu(context, content![index]));
             },
             separatorBuilder: (BuildContext context, int index) =>
@@ -47,7 +72,6 @@ class ModalContent extends StatelessWidget {
                   "assets/images/drink.png",
                   scale: 2,
                 ),
-          // child: Icon(Icons.restaurant_menu_rounded),
           radius: 32,
         ),
         title: Text(name),

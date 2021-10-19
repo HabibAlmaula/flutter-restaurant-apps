@@ -7,15 +7,15 @@ class ShimmerWidget extends StatelessWidget {
   final double height;
   final ShapeBorder shapeBorder;
 
-  const ShimmerWidget.rectangular(
-      {this.width = double.infinity, required this.height})
+   const ShimmerWidget.rectangular(
+      {Key? key, this.width = double.infinity, required this.height})
       : shapeBorder = const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)));
+            borderRadius: BorderRadius.all(Radius.circular(10))), super(key: key);
 
-  const ShimmerWidget.circular(
-      {this.width = double.infinity,
+   const ShimmerWidget.circular(
+      {Key? key, this.width = double.infinity,
       required this.height,
-      this.shapeBorder = const CircleBorder()});
+      this.shapeBorder = const CircleBorder()}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Shimmer.fromColors(
@@ -33,19 +33,41 @@ class ShimmerWidget extends StatelessWidget {
       );
 }
 
-Widget errorOrNoData(String type) {
-  return Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset(
-          (type == "nodata")
-              ? "assets/images/cooking_food.svg"
-              : "assets/images/error.svg",
-          color: Colors.deepOrange,
-        ),
-        Text((type == "nodata") ? "Data tidak ditemukan!" : "Koneksi Error!"),
-      ],
-    ),
-  );
+class ErrorOrNoData extends StatelessWidget {
+  final String type;
+  final VoidCallback? buttonTap;
+
+  const ErrorOrNoData({Key? key, required this.type, this.buttonTap})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 150,
+            height: 150,
+            child: SvgPicture.asset(
+              (type == "nodata")
+                  ? "assets/images/cooking_food.svg"
+                  : "assets/images/error.svg",
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0, bottom: 16.0,),
+            child: Text((type == "nodata") ? "Data tidak ditemukan!" : "Koneksi Error!", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),),
+          ),
+          Visibility(
+              visible: (type == "nodata") ? false : true,
+              child: ElevatedButton(
+                  onPressed: buttonTap, child: const Padding(
+                    padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                    child: Text("reload"),
+                  )))
+        ],
+      ),
+    );
+  }
 }
