@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(
-        const Duration(seconds: 10),
+        const Duration(seconds: 3),
         () =>
             Navigator.pushReplacementNamed(context, RestaurantPage.routeName));
   }
@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.amberAccent,
+      // backgroundColor: Colors.amberAccent,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

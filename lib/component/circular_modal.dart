@@ -22,61 +22,61 @@ class AvatarBottomSheet extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 12),
-            SafeArea(
-                bottom: false,
-                child: AnimatedBuilder(
-                  animation: animation,
-                  builder: (context, child) => Transform.translate(
-                      offset: Offset(0, (1 - animation.value) * 100),
-                      child: Opacity(
-                          child: child,
-                          opacity: max(0, animation.value * 2 - 1))),
-                  child: Row(
-                    children: <Widget>[
-                      const SizedBox(width: 20),
-                      CircleAvatar(
-                        backgroundColor: Colors.white24,
-                        child: (title == "food")
-                            ? Image.asset(
-                                "assets/images/food.png",
-                                scale: 2,
-                              )
-                            : Image.asset(
-                                "assets/images/drink.png",
-                                scale: 2,
-                              ),
-                        radius: 32,
-                      ),
-                    ],
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 12),
+          SafeArea(
+            bottom: false,
+            child: AnimatedBuilder(
+              animation: animation,
+              builder: (context, child) => Transform.translate(
+                  offset: Offset(0, (1 - animation.value) * 100),
+                  child: Opacity(
+                      child: child, opacity: max(0, animation.value * 2 - 1))),
+              child: Row(
+                children: <Widget>[
+                  const SizedBox(width: 20),
+                  CircleAvatar(
+                    backgroundColor: Colors.white24,
+                    child: (title == "food")
+                        ? Image.asset(
+                            "assets/images/food.png",
+                            scale: 2,
+                          )
+                        : Image.asset(
+                            "assets/images/drink.png",
+                            scale: 2,
+                          ),
+                    radius: 32,
                   ),
-                )),
-            const SizedBox(height: 12),
-            Flexible(
-              flex: 1,
-              fit: FlexFit.loose,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15)),
-                child: Container(
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        boxShadow: const [
-                          BoxShadow(
-                              blurRadius: 10,
-                              color: Colors.black12,
-                              spreadRadius: 5)
-                        ]),
-                    width: double.infinity,
-                    child: MediaQuery.removePadding(
-                        context: context, removeTop: true, child: child)),
+                ],
               ),
             ),
-          ]),
+          ),
+          const SizedBox(height: 12),
+          Flexible(
+            flex: 1,
+            fit: FlexFit.loose,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      boxShadow: const [
+                        BoxShadow(
+                            blurRadius: 10,
+                            color: Colors.black12,
+                            spreadRadius: 5)
+                      ]),
+                  width: double.infinity,
+                  child: MediaQuery.removePadding(
+                      context: context, removeTop: true, child: child)),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -100,22 +100,24 @@ Future<T?> showAvatarModalBottomSheet<T>({
 }) async {
   assert(debugCheckHasMediaQuery(context));
   assert(debugCheckHasMaterialLocalizations(context));
-  final result = await Navigator.of(context, rootNavigator: useRootNavigator)
-      .push(ModalBottomSheetRoute<T>(
-    builder: builder,
-    containerBuilder: (_, animation, child) => AvatarBottomSheet(
-      title: title,
-      child: child,
-      animation: animation,
+  final result =
+      await Navigator.of(context, rootNavigator: useRootNavigator).push(
+    ModalBottomSheetRoute<T>(
+      builder: builder,
+      containerBuilder: (_, animation, child) => AvatarBottomSheet(
+        title: title,
+        child: child,
+        animation: animation,
+      ),
+      bounce: bounce,
+      secondAnimationController: secondAnimation,
+      expanded: expand,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      isDismissible: isDismissible,
+      modalBarrierColor: barrierColor,
+      enableDrag: enableDrag,
+      duration: duration,
     ),
-    bounce: bounce,
-    secondAnimationController: secondAnimation,
-    expanded: expand,
-    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    isDismissible: isDismissible,
-    modalBarrierColor: barrierColor,
-    enableDrag: enableDrag,
-    duration: duration,
-  ));
+  );
   return result;
 }

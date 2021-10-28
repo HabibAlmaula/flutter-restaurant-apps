@@ -13,6 +13,11 @@ Restaurants _$RestaurantsFromJson(Map<String, dynamic> json) => Restaurants(
           .toList(),
     );
 
+Map<String, dynamic> _$RestaurantsToJson(Restaurants instance) =>
+    <String, dynamic>{
+      'error': instance.error,
+      'restaurants': instance.restaurants,
+    };
 
 Restaurant _$RestaurantFromJson(Map<String, dynamic> json) => Restaurant(
       id: json['id'] as String,
@@ -23,3 +28,12 @@ Restaurant _$RestaurantFromJson(Map<String, dynamic> json) => Restaurant(
       rating: (json['rating'] as num).toDouble(),
     );
 
+Map<String, dynamic> _$RestaurantToJson(Restaurant instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'description': instance.description,
+      'pictureId': instance.pictureId,
+      'city': instance.city,
+      'rating': instance.rating,
+    };

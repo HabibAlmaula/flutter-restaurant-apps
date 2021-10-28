@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:restaurant_app/data/models/detailrestaurant.dart';
+import 'package:restaurant_app/data/models/detail_restaurant.dart';
 import 'package:restaurant_app/data/models/restaurant.dart';
 import 'package:restaurant_app/data/service/api_service.dart';
 import 'package:restaurant_app/utils/loading.dart';

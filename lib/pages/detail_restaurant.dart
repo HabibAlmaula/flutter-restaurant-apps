@@ -9,13 +9,10 @@ import 'package:restaurant_app/utils/loading.dart';
 class DetailRestaurantPage extends StatelessWidget {
   final String idRestaurant;
 
-  DetailRestaurantPage({Key? key, required this.idRestaurant})
+  const DetailRestaurantPage({Key? key, required this.idRestaurant})
       : super(key: key);
 
   static const routeName = '/detail-restaurant';
-
-  final ScrollController _scrollController = ScrollController();
-  static const double kExpandedHeight = 200;
 
   @override
   Widget build(BuildContext context) {

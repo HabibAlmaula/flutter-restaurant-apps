@@ -10,6 +10,8 @@ class Restaurants {
   List<Restaurant> restaurants;
 
   factory Restaurants.fromJson(Map<String, dynamic> json) => _$RestaurantsFromJson(json);
+  Map<String, dynamic> toJson(restaurants) => _$RestaurantsToJson(restaurants);
+
 }
 
 @JsonSerializable()
@@ -31,5 +33,6 @@ class Restaurant {
   double rating;
 
   factory Restaurant.fromJson(Map<String, dynamic> json) => _$RestaurantFromJson(json);
+  Map<String, dynamic> toJson(restaurant) => _$RestaurantToJson(restaurant);
 
 }
